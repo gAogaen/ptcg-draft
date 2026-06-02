@@ -3,158 +3,70 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Pokmon Card Draft Reveal Board!</title>
+    <title>Draft Board</title>
     <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Kosugi+Maru&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        * { box-sizing: border-box; }
-        body {
-            margin: 0;
-            font-family: 'Kosugi Maru', sans-serif;
-            background: #ffe4e1; /* ポップなピンク背景 */
-            color: #333;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
+        body { margin: 0; font-family: 'Kosugi Maru', sans-serif; background: #ffe4e1; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        
+        #title { font-family: 'Bangers', cursive; font-size: 48px; color: #ff4500; text-shadow: 2px 2px 0 #fff, 0 4px 0 #000; text-align: center; margin-bottom: 20px; }
+        
+        .controls { margin-bottom: 20px; }
+        button { font-family: 'Bangers', cursive; padding: 10px 20px; border-radius: 50px; border: 3px solid #000; cursor: pointer; font-size: 18px; margin: 5px; background: #ffd700; }
+        
+        #capture { width: 100%; max-width: 900px; padding: 30px; background: #fff; border-radius: 30px; border: 6px dashed #ff1493; }
+        
+        .board-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
+        
+        .player-card { background: #fff; padding: 10px; border: 3px solid #000; border-radius: 15px; }
+        .player-header { background: #ff69b4; color: #fff; padding: 5px; text-align: center; font-family: 'Bangers', cursive; border: 2px solid #000; margin-bottom: 10px; }
+        .pick-row { display: flex; align-items: center; gap: 5px; margin-bottom: 5px; }
+        .pick-rank { width: 25px; height: 25px; background: #333; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+        .pick-name { flex: 1; border: 1px solid #ccc; padding: 5px; border-radius: 5px; min-height: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <button onclick="addPlayer()">追加！</button>
+        <button onclick="saveImage()">画像を保存！</button>
+    </div>
+
+    <div id="capture">
+        <div id="title" contenteditable="true">DRAFT BOARD!</div>
+        <div class="board-grid" id="draftBoard"></div>
+    </div>
+
+    <script>
+        const board = document.getElementById('draftBoard');
+
+        function createPlayerCard(name = '名前') {
+            const card = document.createElement('div');
+            card.className = 'player-card';
+            card.innerHTML = `<div class="player-header" contenteditable>${name}</div>`;
+            for (let i = 1; i <= 6; i++) {
+                card.innerHTML += `
+                    <div class="pick-row">
+                        <div class="pick-rank">${i}</div>
+                        <div class="pick-name" contenteditable></div>
+                    </div>`;
+            }
+            board.appendChild(card);
         }
 
-        /* アメコミ風タイトル */
-        #title {
-            font-family: 'Bangers', cursive;
-            font-size: clamp(32px, 5vw, 64px);
-            text-align: center;
-            color: #ff4500; /* 劇的なオレンジレッド */
-            text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 0 #000;
-            margin-bottom: 5px;
-            letter-spacing: 2px;
+        // 初期表示
+        ['Aよし', 'Hiro', 'あめれ', 'uk', 'カボタク'].forEach(name => createPlayerCard(name));
+
+        function addPlayer() { createPlayerCard(); }
+
+        function saveImage() {
+            html2canvas(document.getElementById('capture')).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'draft.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
         }
-
-        .subtitle {
-            text-align: center;
-            font-size: 1rem;
-            color: #ff69b4;
-            margin-bottom: 25px;
-            font-weight: bold;
-        }
-
-        /* ボタン */
-        .controls { margin-bottom: 25px; display: flex; gap: 10px; }
-        button {
-            font-family: 'Bangers', cursive;
-            padding: 12px 24px;
-            border-radius: 50px;
-            border: 3px solid #000;
-            font-size: 20px;
-            cursor: pointer;
-            transition: transform 0.1s, box-shadow 0.2s;
-            box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
-        }
-        button:active { transform: scale(0.95); box-shadow: 2px 2px 0 rgba(0,0,0,0.1); }
-        .gold { background: #ffd700; color: #000; }
-        .dark { background: #333; color: #fff; }
-
-        /* 画像保存用のコンテナ */
-        #capture {
-            width: 100%;
-            max-width: 1200px;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 40px;
-            border: 6px dashed #ff1493;
-            box-shadow: 15px 15px 0 #ffb6c1;
-            position: relative;
-        }
-
-        /* プレイヤーごとのカード (表を廃止) */
-        .board-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-            padding: 20px 0;
-        }
-
-        /* プレイヤーカード本体 */
-        .player-card {
-            background: #fff;
-            padding: 15px;
-            border-radius: 20px;
-            border: 3px solid #000;
-            transition: transform 0.2s ease-in-out;
-            position: relative;
-        }
-
-        /* カードの微妙な傾きを交互につける (整列感を消す) */
-        .player-card:nth-child(even) { transform: rotate(1.5deg); }
-        .player-card:nth-child(odd) { transform: rotate(-1.5deg); }
-
-        /* プレイヤー名 (ヘッダー) */
-        .player-header {
-            font-family: 'Bangers', cursive;
-            font-size: 28px;
-            text-align: center;
-            background: #ff69b4;
-            color: #fff;
-            padding: 8px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            border: 3px solid #000;
-            box-shadow: 4px 4px 0 #000;
-        }
-
-        /* カードごとの行 (順位ごとのピック) */
-        .pick-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 6px;
-        }
-
-        /* 順位番号 (ポップな丸ゴシック) */
-        .pick-rank {
-            width: 32px;
-            height: 32px;
-            font-family: 'Kosugi Maru', sans-serif;
-            font-weight: 900;
-            font-size: 18px;
-            color: #fff;
-            background: #333;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #000;
-        }
-
-        /* カード名入力欄 */
-        .pick-name {
-            flex: 1;
-            font-size: 14px;
-            padding: 8px;
-            background: #f0f8ff;
-            border-radius: 10px;
-            border: 2px solid #87ceeb;
-            text-align: center;
-            min-height: 2em;
-        }
-
-        /* ポイント表 & ルール (効果音パネル風) */
-        .rules-panel {
-            margin-top: 30px;
-            background: #ffd700;
-            color: #000;
-            padding: 20px;
-            border-radius: 25px;
-            border: 4px solid #000;
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 20px;
-            font-weight: bold;
-            box-shadow: 8px 8px 0 #000;
-            position: relative;
-        }
-
-        /* ポイント表タイトル */
-        .rules-title {
-            grid-column: 1 / -1;
-            font-family: 'Bangers
+    </script>
+</body>
+</html>
