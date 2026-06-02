@@ -3,105 +3,158 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Draft Board</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
+    <title>Pokmon Card Draft Reveal Board!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Kosugi+Maru&display=swap" rel="stylesheet">
     <style>
+        * { box-sizing: border-box; }
         body {
-            background: #fff0f5; /* ポップなパステル背景 */
+            margin: 0;
             font-family: 'Kosugi Maru', sans-serif;
+            background: #ffe4e1; /* ポップなピンク背景 */
+            color: #333;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px;
+            padding: 20px;
         }
 
-        /* 全体コンテナを紙のように見せる */
-        #capture {
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 30px;
-            border: 4px dashed #ff69b4; /* 手書き風の破線 */
-            box-shadow: 10px 10px 0px #ffc0cb;
-            width: 100%;
-            max-width: 800px;
-        }
-
-        h1 { color: #ff69b4; text-align: center; margin-top: 0; }
-
-        /* 表の代わりに「Flexbox」で横並びを作る */
-        .board {
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            padding: 20px 0;
-        }
-
-        .column {
-            flex: 1;
-            min-width: 120px;
-        }
-
-        .header-cell {
-            background: #ff69b4;
-            color: white;
-            padding: 10px;
-            border-radius: 15px;
+        /* アメコミ風タイトル */
+        #title {
+            font-family: 'Bangers', cursive;
+            font-size: clamp(32px, 5vw, 64px);
             text-align: center;
-            margin-bottom: 10px;
+            color: #ff4500; /* 劇的なオレンジレッド */
+            text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 0 #000;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1rem;
+            color: #ff69b4;
+            margin-bottom: 25px;
             font-weight: bold;
         }
 
-        .item {
+        /* ボタン */
+        .controls { margin-bottom: 25px; display: flex; gap: 10px; }
+        button {
+            font-family: 'Bangers', cursive;
+            padding: 12px 24px;
+            border-radius: 50px;
+            border: 3px solid #000;
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.2s;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+        }
+        button:active { transform: scale(0.95); box-shadow: 2px 2px 0 rgba(0,0,0,0.1); }
+        .gold { background: #ffd700; color: #000; }
+        .dark { background: #333; color: #fff; }
+
+        /* 画像保存用のコンテナ */
+        #capture {
+            width: 100%;
+            max-width: 1200px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 40px;
+            border: 6px dashed #ff1493;
+            box-shadow: 15px 15px 0 #ffb6c1;
+            position: relative;
+        }
+
+        /* プレイヤーごとのカード (表を廃止) */
+        .board-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        /* プレイヤーカード本体 */
+        .player-card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 20px;
+            border: 3px solid #000;
+            transition: transform 0.2s ease-in-out;
+            position: relative;
+        }
+
+        /* カードの微妙な傾きを交互につける (整列感を消す) */
+        .player-card:nth-child(even) { transform: rotate(1.5deg); }
+        .player-card:nth-child(odd) { transform: rotate(-1.5deg); }
+
+        /* プレイヤー名 (ヘッダー) */
+        .player-header {
+            font-family: 'Bangers', cursive;
+            font-size: 28px;
+            text-align: center;
+            background: #ff69b4;
+            color: #fff;
+            padding: 8px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0 #000;
+        }
+
+        /* カードごとの行 (順位ごとのピック) */
+        .pick-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        /* 順位番号 (ポップな丸ゴシック) */
+        .pick-rank {
+            width: 32px;
+            height: 32px;
+            font-family: 'Kosugi Maru', sans-serif;
+            font-weight: 900;
+            font-size: 18px;
+            color: #fff;
+            background: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #000;
+        }
+
+        /* カード名入力欄 */
+        .pick-name {
+            flex: 1;
+            font-size: 14px;
+            padding: 8px;
             background: #f0f8ff;
-            margin-bottom: 8px;
-            padding: 10px;
             border-radius: 10px;
             border: 2px solid #87ceeb;
             text-align: center;
             min-height: 2em;
         }
 
-        button {
-            padding: 15px 30px;
-            border-radius: 50px;
-            border: none;
-            background: #ff69b4;
-            color: white;
-            font-size: 16px;
+        /* ポイント表 & ルール (効果音パネル風) */
+        .rules-panel {
+            margin-top: 30px;
+            background: #ffd700;
+            color: #000;
+            padding: 20px;
+            border-radius: 25px;
+            border: 4px solid #000;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 20px;
             font-weight: bold;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
-    </style>
-</head>
-<body>
-
-    <button onclick="saveImage()">画像を保存する！</button>
-
-    <div id="capture">
-        <h1>ドラフト会議！</h1>
-        <div class="board" id="draftBoard">
-            </div>
-    </div>
-
-    <script>
-        const board = document.getElementById('draftBoard');
-        
-        // 5人分初期生成
-        for (let i = 0; i < 5; i++) {
-            const col = document.createElement('div');
-            col.className = 'column';
-            col.innerHTML = `<div class="header-cell" contenteditable>名前</div>`;
-            for (let j = 0; j < 6; j++) {
-                col.innerHTML += `<div class="item" contenteditable></div>`;
-            }
-            board.appendChild(col);
+            box-shadow: 8px 8px 0 #000;
+            position: relative;
         }
 
-        function saveImage() {
-            // html2canvasを使って画像を保存する処理は以前と同じ
-            alert("画像保存処理を実行します");
-        }
-    </script>
-</body>
-</html>
+        /* ポイント表タイトル */
+        .rules-title {
+            grid-column: 1 / -1;
+            font-family: 'Bangers
