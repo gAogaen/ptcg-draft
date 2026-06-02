@@ -5,73 +5,103 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Draft Reveal Board</title>
+<* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    background: #0f172a;
+    color: #f1f5f9;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 <style>
-body{
-margin:0;
-font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-background:linear-gradient(135deg,#0f172a,#1e293b);
-color:white;
-padding:20px;
+/* 全体コンテナ */
+#capture {
+    width: 100%;
+    max-width: 900px;
+    background: linear-gradient(160deg, #1e293b, #0f172a);
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid #334155;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
 }
-h1{
-text-align:center;
-font-size:42px;
-letter-spacing:2px;
+
+/* タイトル周り */
+#title {
+    font-size: 2rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 5px;
+    color: #fbbf24; /* ドラフトっぽいゴールド */
+    text-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
 }
-#capture{
-max-width:1400px;
-margin:auto;
-background:rgba(255,255,255,.06);
-backdrop-filter:blur(10px);
-border:1px solid rgba(255,255,255,.1);
-border-radius:24px;
-padding:24px;
-box-shadow:0 20px 60px rgba(0,0,0,.4);
+
+.subtitle {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    margin-bottom: 20px;
 }
-table{
-width:100%;
-border-collapse:collapse;
+
+/* テーブルデザイン */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #334155;
 }
-th{
-background:#f59e0b;
-color:#111;
-font-size:20px;
-padding:14px;
+
+th {
+    background: #fbbf24;
+    color: #0f172a;
+    padding: 12px;
+    text-align: center;
+    font-weight: 700;
 }
-td{
-border:1px solid rgba(255,255,255,.1);
-padding:12px;
-font-size:18px;
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #334155;
+    background: rgba(255, 255, 255, 0.03);
+    text-align: center;
 }
-.rank{
-width:70px;
-text-align:center;
-font-weight:bold;
-background:rgba(255,255,255,.05);
+
+.rank {
+    background: rgba(255, 255, 255, 0.06);
+    font-weight: bold;
+    width: 60px;
 }
-[contenteditable]{
-outline:none;
+
+/* 入力欄の見た目 */
+[contenteditable]:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
-.controls{
-text-align:center;
-margin:20px;
+
+[contenteditable]:focus {
+    background: rgba(255, 255, 255, 0.15);
+    outline: 2px solid #fbbf24;
 }
-button{
-border:none;
-padding:14px 22px;
-margin:5px;
-border-radius:12px;
-cursor:pointer;
-font-size:16px;
-font-weight:bold;
+
+/* ボタン */
+.controls { margin-bottom: 20px; }
+button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s;
+    border: none;
 }
-.primary{background:#f59e0b;}
-.secondary{background:#334155;color:white;}
-.footer{
-margin-top:16px;
-text-align:right;
-opacity:.7;
-}
+button:active { transform: scale(0.95); }
+.gold { background: #fbbf24; color: #000; }
+.dark { background: #475569; color: #fff; }
+
+.footer { text-align: right; margin-top: 15px; color: #64748b; font-size: 0.8rem; }
 </style>
 </head>
 <body>
