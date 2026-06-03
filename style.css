@@ -1,216 +1,439 @@
-const defaultState = {
-  title: "WANTAN CUP DRAFT",
-  subtitle: "FIGHTING GAME TEAM BATTLE",
-  ratio: "landscape",
-  teams: [
-    { name: "TEAM BLAZE", color: "#ff3045", players: ["SHAKA", "ハイタニ", "ときど", "ガチくん", "立川", "カワノ"] },
-    { name: "TEAM ARCTIC", color: "#22a8ff", players: ["k4sen", "ふ〜ど", "どぐら", "マゴ", "もけ", "ナウマン"] },
-    { name: "TEAM NEBULA", color: "#b636ff", players: ["じゃすぱー", "ボンちゃん", "MOV", "あくあ", "りゅうせい", "竹内ジョン"] },
-    { name: "TEAM VENOM", color: "#00d084", players: ["ウメハラ", "板橋ザンギエフ", "ネモ", "sako", "ぷげら", "翔"] },
-    { name: "TEAM ORBIT", color: "#ff8a00", players: ["SPYGEA", "だるまいずごっど", "ありさか", "たいじ", "おぼ", "Zerost"] },
-    { name: "TEAM CROWN", color: "#ffd200", players: ["もこう", "加藤純一", "おにや", "こくじん", "総師範KSK", "えいた"] }
-  ]
-};
+@import url('https://fonts.googleapis.com/css2?family=Reggae+One&family=Noto+Sans+JP:wght@400;700;900&family=Oswald:wght@500;700&display=swap');
 
-let state = structuredClone(defaultState);
-
-const $ = (id) => document.getElementById(id);
-const teamCount = $("teamCount");
-const teamEditor = $("teamEditor");
-const board = $("board");
-const captureArea = $("captureArea");
-
-for (let i = 1; i <= 6; i++) {
-  const opt = document.createElement("option");
-  opt.value = i;
-  opt.textContent = `${i}チーム`;
-  teamCount.appendChild(opt);
+:root{
+  --bg:#05070d;
+  --panel:rgba(8,12,24,.78);
+  --line:rgba(255,255,255,.14);
+  --text:#fff;
+  --muted:rgba(255,255,255,.66);
+  --accent:#ff3045;
 }
 
-function encodeState() {
-  return btoa(unescape(encodeURIComponent(JSON.stringify({
-    title: state.title,
-    subtitle: state.subtitle,
-    ratio: state.ratio,
-    teams: state.teams.slice(0, Number(teamCount.value))
-  }))));
+*{box-sizing:border-box}
+
+html,body{min-height:100%}
+
+body{
+  margin:0;
+  color:var(--text);
+  font-family:"Noto Sans JP",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:#05070d;
 }
 
-function decodeState() {
-  const params = new URLSearchParams(location.search);
-  const raw = params.get("data");
-  if (!raw) return false;
-  try {
-    const parsed = JSON.parse(decodeURIComponent(escape(atob(raw))));
-    state.title = parsed.title || defaultState.title;
-    state.subtitle = parsed.subtitle || defaultState.subtitle;
-    state.ratio = parsed.ratio || "landscape";
-    state.teams = [...parsed.teams, ...defaultState.teams].slice(0, 6);
-    return true;
-  } catch (e) {
-    console.warn("URLデータの読み込みに失敗しました", e);
-    return false;
+.site-bg{
+  position:fixed;
+  inset:0;
+  z-index:-10;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.7)),
+    url("./assets/noise.png"),
+    url("./assets/background.webp") center/cover no-repeat;
+}
+
+.app{
+  width:min(1600px,100%);
+  margin-inline:auto;
+  padding:18px;
+}
+
+.tool-panel{
+  border:1px solid var(--line);
+  background:linear-gradient(135deg,rgba(12,16,34,.9),rgba(4,7,15,.72));
+  -webkit-backdrop-filter:blur(14px);
+  backdrop-filter:blur(14px);
+  border-radius:24px;
+  padding:18px;
+  box-shadow:0 24px 80px rgba(0,0,0,.45);
+}
+
+.tool-panel__top{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  align-items:center;
+}
+
+.eyebrow,.poster-kicker{
+  margin:0 0 4px;
+  color:#ffcf4c;
+  font-family:"Oswald","Noto Sans JP",sans-serif;
+  letter-spacing:.22em;
+  font-size:12px;
+}
+
+.tool-panel h1{
+  margin:0;
+  font-size:clamp(20px,4vw,34px);
+  letter-spacing:.03em;
+}
+
+.controls{margin-top:16px}
+
+.field-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(160px,1fr));
+  gap:12px;
+}
+
+label{
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
+}
+
+input,select{
+  width:100%;
+  margin-top:6px;
+  padding:12px 13px;
+  border:none;
+  border-radius:12px;
+  background:rgba(255,255,255,.1);
+  color:#fff;
+  outline:1px solid rgba(255,255,255,.08);
+  font:inherit;
+}
+
+select option{color:#111;background:#fff}
+
+input:focus,select:focus{
+  outline:2px solid var(--accent);
+}
+
+.button-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:16px 0;
+}
+
+button{
+  border:0;
+  border-radius:999px;
+  padding:12px 18px;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  background:linear-gradient(135deg,#ff3045,#b735ff);
+  box-shadow:0 10px 30px rgba(255,48,69,.26);
+}
+
+button.secondary,.ghost-button{
+  background:rgba(255,255,255,.12);
+  box-shadow:none;
+}
+
+.team-editor{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:14px;
+}
+
+.editor-card{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  padding:14px;
+  background:rgba(0,0,0,.28);
+}
+
+.editor-card h3{
+  margin:0 0 10px;
+  font-family:"Oswald","Noto Sans JP",sans-serif;
+  letter-spacing:.08em;
+}
+
+.color-input{
+  min-height:44px;
+  padding:4px;
+}
+
+.preview-wrap{
+  margin-top:18px;
+  overflow:auto;
+  padding:8px 0 24px;
+}
+
+.capture-area{
+  position:relative;
+  margin:auto;
+  background:#05070d;
+  overflow:hidden;
+  isolation:isolate;
+  box-shadow:0 30px 120px rgba(0,0,0,.75);
+}
+
+.capture-area.landscape{width:min(100%,1280px);aspect-ratio:16/9}
+.capture-area.portrait{width:min(100%,520px);aspect-ratio:9/16}
+.capture-area.square{width:min(100%,900px);aspect-ratio:1/1}
+
+.poster-bg{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.52)),
+    url("./assets/noise.png"),
+    url("./assets/background.webp") center/cover no-repeat;
+  filter:saturate(1.25) contrast(1.08);
+  z-index:-3;
+}
+
+.poster-bg:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    url("./assets/slash.svg") center 30%/120% 40% no-repeat,
+    repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0 1px,transparent 1px 6px);
+  opacity:.45;
+}
+
+.poster-frame{
+  position:absolute;
+  inset:3.2%;
+  display:flex;
+  flex-direction:column;
+  gap:2.2%;
+  border:2px solid rgba(255,255,255,.18);
+  padding:2.2%;
+}
+
+.poster-frame:before,.poster-frame:after{
+  content:"";
+  position:absolute;
+  width:26%;
+  height:3px;
+  background:linear-gradient(90deg,#ff3045,#22a8ff,#ffd200);
+  filter:drop-shadow(0 0 18px #fff);
+}
+
+.poster-frame:before{left:-2px;top:-2px}
+.poster-frame:after{right:-2px;bottom:-2px}
+
+.poster-topline,.poster-footer{
+  display:flex;
+  justify-content:space-between;
+  color:rgba(255,255,255,.7);
+  font-family:"Oswald","Noto Sans JP",sans-serif;
+  font-size:clamp(8px,1.3vw,15px);
+  letter-spacing:.16em;
+  z-index:2;
+}
+
+.poster-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:3%;
+  z-index:2;
+}
+
+.poster-header h2{
+  margin:0;
+  font-family:"Reggae One","Noto Sans JP",cursive;
+  font-size:clamp(34px,6.7vw,90px);
+  line-height:.95;
+  letter-spacing:.04em;
+  transform:skew(-7deg) rotate(-1deg);
+  text-shadow:
+    3px 3px 0 #000,
+    0 0 16px rgba(255,255,255,.65),
+    0 0 50px rgba(255,48,69,.48);
+}
+
+.poster-badge{
+  min-width:12%;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.25);
+  padding:1.2% 1.6%;
+  background:rgba(0,0,0,.35);
+  transform:skew(-8deg);
+}
+
+.poster-badge strong{
+  display:block;
+  font-family:"Oswald","Noto Sans JP",sans-serif;
+  font-size:clamp(16px,2.4vw,36px);
+}
+
+.poster-badge span{
+  color:#ffcf4c;
+  font-size:clamp(8px,1vw,14px);
+  letter-spacing:.18em;
+}
+
+.draft-board{
+  flex:1;
+  min-height:0;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-auto-rows:1fr;
+  gap:1.4%;
+  z-index:2;
+}
+
+.capture-area.portrait .draft-board{grid-template-columns:1fr}
+.capture-area.square .draft-board{grid-template-columns:repeat(2,1fr)}
+.capture-area.landscape .draft-board.team-count-1{grid-template-columns:1fr}
+.capture-area.landscape .draft-board.team-count-2{grid-template-columns:repeat(2,1fr)}
+.capture-area.landscape .draft-board.team-count-4{grid-template-columns:repeat(2,1fr)}
+
+.team-card{
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  border:2px solid var(--team-color);
+  background:
+    linear-gradient(135deg,rgba(var(--team-rgb),.26),rgba(5,8,18,.92) 36%,rgba(0,0,0,.84)),
+    rgba(0,0,0,.78);
+  box-shadow:
+    inset 0 0 28px rgba(255,255,255,.06),
+    0 0 30px rgba(var(--team-rgb),.58);
+  clip-path:polygon(0 0,94% 0,100% 9%,100% 100%,6% 100%,0 91%);
+}
+
+.team-card:before{
+  content:"";
+  position:absolute;
+  inset:-20%;
+  background:
+    linear-gradient(110deg,transparent 0 45%,rgba(255,255,255,.18) 48%,transparent 52%),
+    repeating-linear-gradient(135deg,transparent 0 18px,rgba(255,255,255,.04) 18px 19px);
+  opacity:.52;
+  pointer-events:none;
+}
+
+.team-card:after{
+  content:"";
+  position:absolute;
+  right:-10%;
+  top:-25%;
+  width:42%;
+  height:170%;
+  background:var(--team-color);
+  opacity:.12;
+  transform:rotate(18deg);
+  filter:blur(2px);
+}
+
+.team-head{
+  position:relative;
+  z-index:2;
+  padding:2.8% 4%;
+  background:linear-gradient(90deg,var(--team-color),rgba(var(--team-rgb),.12));
+  border-bottom:1px solid rgba(255,255,255,.22);
+}
+
+.team-index{
+  font-family:"Oswald","Noto Sans JP",sans-serif;
+  font-size:clamp(9px,1vw,15px);
+  letter-spacing:.2em;
+  opacity:.78;
+}
+
+.team-name{
+  margin-top:2px;
+  font-family:"Oswald","Noto Sans JP",sans-serif;
+  font-size:clamp(19px,2.7vw,38px);
+  font-weight:900;
+  letter-spacing:.06em;
+  line-height:1;
+  text-transform:uppercase;
+  text-shadow:2px 2px 0 #000,0 0 18px rgba(255,255,255,.35);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.players{
+  position:relative;
+  z-index:2;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-evenly;
+  padding:2.2% 3.4% 3%;
+}
+
+.player-row{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:3.5%;
+  align-items:center;
+  min-height:0;
+  padding:1.7% 2.5%;
+  background:linear-gradient(90deg,rgba(255,255,255,.12),rgba(255,255,255,.025));
+  border:1px solid rgba(255,255,255,.11);
+  transform:skew(-7deg);
+}
+
+.player-row > *{transform:skew(7deg)}
+
+.pick-no{
+  min-width:2.3em;
+  font-family:"Oswald","Noto Sans JP",sans-serif;
+  font-size:clamp(13px,1.8vw,27px);
+  color:var(--team-color);
+  text-shadow:0 0 12px var(--team-color);
+}
+
+.player-name{
+  font-size:clamp(13px,1.65vw,27px);
+  font-weight:900;
+  letter-spacing:.03em;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  text-shadow:2px 2px 0 rgba(0,0,0,.8);
+}
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:22px;
+  transform:translateX(-50%) translateY(20px);
+  padding:12px 16px;
+  border-radius:999px;
+  background:rgba(0,0,0,.86);
+  border:1px solid rgba(255,255,255,.2);
+  color:#fff;
+  opacity:0;
+  transition:.25s;
+  pointer-events:none;
+  z-index:100;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+@media (max-width:900px){
+  .field-grid{grid-template-columns:1fr 1fr}
+  .tool-panel__top{align-items:flex-start}
+}
+
+@media (max-width:640px){
+  .app{padding:10px}
+  .field-grid{grid-template-columns:1fr}
+  .poster-frame{inset:2.6%;padding:2.6%}
+  .poster-topline,.poster-footer{font-size:8px}
+  .poster-badge{display:none}
+}
+
+@media (orientation:landscape) and (max-height:520px){
+  .app{
+    display:grid;
+    grid-template-columns:350px 1fr;
+    gap:10px;
+    align-items:start;
+  }
+  .tool-panel{
+    max-height:96vh;
+    overflow:auto;
+    padding:12px;
+  }
+  .preview-wrap{
+    margin-top:0;
+    padding:0;
   }
 }
-
-function showToast(text) {
-  const toast = $("toast");
-  toast.textContent = text;
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 1800);
-}
-
-function syncInputs() {
-  $("eventTitle").value = state.title;
-  $("eventSubtitle").value = state.subtitle;
-  $("boardRatio").value = state.ratio;
-  teamCount.value = String(Math.min(6, Math.max(1, state.teams.length)));
-  buildEditor();
-  render();
-}
-
-function buildEditor() {
-  const count = Number(teamCount.value);
-  teamEditor.innerHTML = "";
-
-  for (let t = 0; t < count; t++) {
-    if (!state.teams[t]) state.teams[t] = structuredClone(defaultState.teams[t]);
-    const team = state.teams[t];
-
-    const card = document.createElement("article");
-    card.className = "editor-card";
-    card.innerHTML = `
-      <h3>TEAM ${String(t + 1).padStart(2, "0")}</h3>
-      <label>チーム名
-        <input data-team="${t}" data-field="name" type="text" maxlength="24" value="${escapeHtml(team.name)}">
-      </label>
-      <label>チームカラー
-        <input class="color-input" data-team="${t}" data-field="color" type="color" value="${team.color}">
-      </label>
-      ${Array.from({ length: 6 }, (_, p) => `
-        <label>選手${p + 1}
-          <input data-team="${t}" data-player="${p}" type="text" maxlength="24" value="${escapeHtml(team.players[p] || "")}">
-        </label>
-      `).join("")}
-    `;
-    teamEditor.appendChild(card);
-  }
-
-  teamEditor.querySelectorAll("input").forEach((input) => {
-    input.addEventListener("input", (e) => {
-      const el = e.currentTarget;
-      const t = Number(el.dataset.team);
-      if (el.dataset.field === "name") state.teams[t].name = el.value;
-      if (el.dataset.field === "color") state.teams[t].color = el.value;
-      if (el.dataset.player !== undefined) state.teams[t].players[Number(el.dataset.player)] = el.value;
-      render();
-    });
-  });
-}
-
-function render() {
-  state.title = $("eventTitle").value || "DRAFT RESULTS";
-  state.subtitle = $("eventSubtitle").value || "FIGHTING GAME TEAM BATTLE";
-  state.ratio = $("boardRatio").value;
-
-  $("posterTitle").textContent = state.title;
-  $("posterSubtitle").textContent = state.subtitle;
-
-  captureArea.className = `capture-area ${state.ratio}`;
-
-  const count = Number(teamCount.value);
-  board.className = `draft-board team-count-${count}`;
-  board.innerHTML = "";
-
-  state.teams.slice(0, count).forEach((team, index) => {
-    const card = document.createElement("article");
-    card.className = "team-card";
-    card.style.setProperty("--team-color", team.color);
-
-    card.innerHTML = `
-      <div class="team-head">
-        <div class="team-index">TEAM ${String(index + 1).padStart(2, "0")}</div>
-        <div class="team-name">${escapeHtml(team.name || `TEAM ${index + 1}`)}</div>
-      </div>
-      <div class="players">
-        ${Array.from({ length: 6 }, (_, p) => `
-          <div class="player-row">
-            <div class="pick-no">${String(p + 1).padStart(2, "0")}</div>
-            <div class="player-name">${escapeHtml(team.players[p] || `PLAYER ${p + 1}`)}</div>
-          </div>
-        `).join("")}
-      </div>
-    `;
-    board.appendChild(card);
-  });
-}
-
-function escapeHtml(str) {
-  return String(str).replace(/[&<>"']/g, (m) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    "\"": "&quot;",
-    "'": "&#039;"
-  }[m]));
-}
-
-$("eventTitle").addEventListener("input", render);
-$("eventSubtitle").addEventListener("input", render);
-$("boardRatio").addEventListener("change", render);
-
-teamCount.addEventListener("change", () => {
-  const count = Number(teamCount.value);
-  while (state.teams.length < count) state.teams.push(structuredClone(defaultState.teams[state.teams.length]));
-  buildEditor();
-  render();
-});
-
-$("resetSample").addEventListener("click", () => {
-  state = structuredClone(defaultState);
-  syncInputs();
-  showToast("サンプルに戻しました");
-});
-
-$("copyShareUrl").addEventListener("click", async () => {
-  const url = `${location.origin}${location.pathname}?data=${encodeURIComponent(encodeState())}`;
-  try {
-    await navigator.clipboard.writeText(url);
-    showToast("共有URLをコピーしました");
-  } catch {
-    prompt("このURLをコピーしてください", url);
-  }
-});
-
-$("downloadPng").addEventListener("click", async () => {
-  const ratio = state.ratio;
-  const targetW = ratio === "portrait" ? 1080 : ratio === "square" ? 1200 : 1920;
-  const currentW = captureArea.getBoundingClientRect().width;
-  const scale = Math.max(2, targetW / currentW);
-
-  showToast("画像を生成しています");
-
-  const canvas = await html2canvas(captureArea, {
-    backgroundColor: null,
-    scale,
-    useCORS: true,
-    logging: false
-  });
-
-  const a = document.createElement("a");
-  const safeTitle = (state.title || "draft-results").replace(/[\\/:*?"<>|]/g, "_");
-  a.download = `${safeTitle}.png`;
-  a.href = canvas.toDataURL("image/png");
-  a.click();
-  showToast("PNGを保存しました");
-});
-
-$("togglePanel").addEventListener("click", () => {
-  const controls = $("controls");
-  const hidden = controls.style.display === "none";
-  controls.style.display = hidden ? "" : "none";
-  $("togglePanel").textContent = hidden ? "入力欄を隠す" : "入力欄を表示";
-});
-
-decodeState();
-syncInputs();

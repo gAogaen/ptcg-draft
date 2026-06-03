@@ -1,96 +1,41 @@
-<!doctype html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>ドラフト指名結果メーカー</title>
-  <meta name="description" content="格ゲー・eスポーツ大会向けのドラフト指名結果ボードメーカー">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Reggae+One&family=Noto+Sans+JP:wght@400;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="site-bg" aria-hidden="true"></div>
+# ドラフト指名結果メーカー 修正版
 
-  <main class="app">
-    <section class="tool-panel" aria-label="入力パネル">
-      <div class="tool-panel__top">
-        <div>
-          <p class="eyebrow">DRAFT BOARD MAKER</p>
-          <h1>ドラフト指名結果メーカー</h1>
-        </div>
-        <button id="togglePanel" class="ghost-button" type="button">入力欄を隠す</button>
-      </div>
+GitHub Pages にそのままアップロードして使える、格ゲー・eスポーツ大会向けドラフト結果発表サイトです。
 
-      <div id="controls" class="controls">
-        <div class="field-grid">
-          <label>
-            大会名
-            <input id="eventTitle" type="text" maxlength="40">
-          </label>
-          <label>
-            サブタイトル
-            <input id="eventSubtitle" type="text" maxlength="48">
-          </label>
-          <label>
-            チーム数
-            <select id="teamCount" aria-label="チーム数"></select>
-          </label>
-          <label>
-            ボード比率
-            <select id="boardRatio">
-              <option value="landscape">16:9 横長 / 配信・X向け</option>
-              <option value="portrait">9:16 縦長</option>
-              <option value="square">1:1 正方形</option>
-            </select>
-          </label>
-        </div>
+## 修正内容
 
-        <div class="button-row">
-          <button id="downloadPng" type="button">画像として保存</button>
-          <button id="copyShareUrl" type="button">共有URLをコピー</button>
-          <button id="resetSample" type="button" class="secondary">サンプルに戻す</button>
-        </div>
+前回版で表示不具合の原因になりやすかった箇所を修正しています。
 
-        <div id="teamEditor" class="team-editor"></div>
-      </div>
-    </section>
+- `structuredClone` を使わない実装に変更
+- CSS の `color-mix()` を使わない実装に変更
+- 画像パスを `./assets/...` に統一
+- 初期表示・サンプルから特定大会名の文字を削除
+- PNG保存ライブラリが読み込めない場合のエラー表示を追加
+- GitHub Pages 向けに相対パスを整理
 
-    <section class="preview-wrap" aria-label="プレビュー">
-      <div id="captureArea" class="capture-area landscape">
-        <div class="poster-bg"></div>
-        <div class="poster-frame">
-          <div class="poster-topline">
-            <span id="posterSubtitle">FIGHTING GAME TEAM BATTLE</span>
-            <span>LIVE DRAFT RESULTS</span>
-          </div>
+## ファイル構成
 
-          <header class="poster-header">
-            <div>
-              <p class="poster-kicker">STREET BATTLE LEAGUE</p>
-              <h2 id="posterTitle">WANTAN CUP DRAFT</h2>
-            </div>
-            <div class="poster-badge">
-              <strong>DRAFT</strong>
-              <span>RESULT</span>
-            </div>
-          </header>
+```text
+index.html
+style.css
+script.js
+README.md
+sample-data.json
+assets/
+  background.webp
+  noise.png
+  slash.svg
+```
 
-          <section id="board" class="draft-board"></section>
+## GitHub Pages での使い方
 
-          <footer class="poster-footer">
-            <span>NO ICONS / NO PHOTOS / TEXT ONLY</span>
-            <span>GENERATED FOR STREAM OVERLAY</span>
-          </footer>
-        </div>
-      </div>
-    </section>
-  </main>
+1. ZIPを解凍
+2. 中身をリポジトリ直下へアップロード
+3. Settings → Pages
+4. Branch を `main` / root に設定
+5. 表示されたURLへアクセス
 
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+## 注意
 
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="script.js"></script>
-</body>
-</html>
+PNG保存には `html2canvas` をCDNから読み込んでいます。  
+社内ネットワークや広告ブロック環境では、表示はできてもPNG保存だけ失敗する場合があります。
