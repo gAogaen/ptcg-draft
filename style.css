@@ -1,6 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Reggae+One&family=Noto+Sans+JP:wght@400;700;900&family=Oswald:wght@500;700&display=swap');
 
+@font-face{
+  font-family:"OnionGeki";
+  src:url("./assets/fonts/onion-geki.woff2") format("woff2"),
+      url("./assets/fonts/onion-geki.ttf") format("truetype");
+  font-display:swap;
+}
+
+
 :root{
+  --brush-font:"OnionGeki","Reggae One","Noto Sans JP",cursive;
   --bg:#05070d;
   --panel:rgba(8,12,24,.78);
   --line:rgba(255,255,255,.14);
@@ -228,16 +237,50 @@ button.secondary,.ghost-button{
 }
 
 .poster-header h2{
+  position:relative;
   margin:0;
-  font-family:"Reggae One","Noto Sans JP",cursive;
-  font-size:clamp(28px,5.2vw,68px);
-  line-height:.95;
-  letter-spacing:.04em;
-  transform:skew(-7deg) rotate(-1deg);
+  font-family:var(--brush-font);
+  font-size:clamp(24px,4.7vw,60px);
+  line-height:.92;
+  letter-spacing:.08em;
+  font-weight:400;
+  transform:skew(-9deg) rotate(-1.2deg);
+  color:#fff;
+  paint-order:stroke fill;
+  -webkit-text-stroke:1.2px rgba(0,0,0,.9);
   text-shadow:
-    3px 3px 0 #000,
-    0 0 16px rgba(255,255,255,.65),
-    0 0 50px rgba(255,48,69,.48);
+    4px 5px 0 rgba(0,0,0,.95),
+    -2px 0 0 rgba(0,0,0,.9),
+    0 0 10px rgba(255,255,255,.75),
+    0 0 28px rgba(255,255,255,.35),
+    0 0 64px rgba(255,48,69,.42);
+  filter:contrast(1.18);
+}
+
+
+.poster-header h2:after{
+  content:"";
+  position:absolute;
+  left:-3%;
+  right:-5%;
+  bottom:.04em;
+  height:.16em;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);
+  opacity:.28;
+  transform:skew(-18deg);
+  filter:blur(1px);
+}
+
+.team-head:after{
+  content:"";
+  position:absolute;
+  left:3%;
+  right:10%;
+  bottom:8%;
+  height:2px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.62),transparent);
+  opacity:.32;
+  filter:blur(.5px);
 }
 
 .poster-badge{
@@ -335,16 +378,23 @@ button.secondary,.ghost-button{
 
 .team-name{
   margin-top:1px;
-  font-family:"Oswald","Noto Sans JP",sans-serif;
-  font-size:clamp(16px,2.1vw,30px);
-  font-weight:900;
-  letter-spacing:.06em;
+  font-family:var(--brush-font);
+  font-size:clamp(18px,2.35vw,34px);
+  font-weight:400;
+  letter-spacing:.08em;
   line-height:1;
   text-transform:uppercase;
-  text-shadow:2px 2px 0 #000,0 0 18px rgba(255,255,255,.35);
+  color:#fff;
+  paint-order:stroke fill;
+  -webkit-text-stroke:.75px rgba(0,0,0,.9);
+  text-shadow:
+    2px 3px 0 #000,
+    0 0 12px rgba(255,255,255,.45),
+    0 0 20px var(--team-color);
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
+  transform:skew(-6deg) rotate(-1deg);
 }
 
 .players{
@@ -393,7 +443,8 @@ button.secondary,.ghost-button{
 .capture-area.landscape .draft-board.team-count-4 .team-name,
 .capture-area.landscape .draft-board.team-count-5 .team-name,
 .capture-area.landscape .draft-board.team-count-6 .team-name{
-  font-size:clamp(13px,1.6vw,22px);
+  font-size:clamp(14px,1.8vw,25px);
+  letter-spacing:.05em;
 }
 
 .capture-area.landscape .draft-board.team-count-4 .player-name,
@@ -453,7 +504,33 @@ button.secondary,.ghost-button{
   .poster-frame{inset:2.6%;padding:2.3%;gap:1%}
   .poster-header h2{font-size:clamp(24px,8vw,46px)}
   .poster-topline,.poster-footer{font-size:8px}
-  .poster-badge{display:none}
+  
+.poster-header h2:after{
+  content:"";
+  position:absolute;
+  left:-3%;
+  right:-5%;
+  bottom:.04em;
+  height:.16em;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);
+  opacity:.28;
+  transform:skew(-18deg);
+  filter:blur(1px);
+}
+
+.team-head:after{
+  content:"";
+  position:absolute;
+  left:3%;
+  right:10%;
+  bottom:8%;
+  height:2px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.62),transparent);
+  opacity:.32;
+  filter:blur(.5px);
+}
+
+.poster-badge{display:none}
 }
 
 @media (orientation:landscape) and (max-height:520px){
