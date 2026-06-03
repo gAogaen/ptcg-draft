@@ -315,7 +315,7 @@ body.noise-on .poster-bg{
     2px 2px 0 rgba(0,0,0,.9),
     0 0 10px rgba(255,255,255,.42),
     0 0 20px rgba(255,48,69,.22);
-  z-index:30;
+  z-index:2;
 }
 
 .poster-topline span{
@@ -681,4 +681,45 @@ body.noise-on .poster-bg{
     gap:.12em;
     padding:0 .3em;
   }
+}
+
+
+/* front subtitle fixed patch */
+
+/* Hide unwanted label/badge texts completely */
+.poster-badge,
+.poster-badge strong,
+.poster-badge span,
+.poster-kicker,
+.poster-footer,
+.poster-footer span{
+  display:none !important;
+  visibility:hidden !important;
+}
+
+/* Make subtitle foreground */
+.poster-topline{
+  position:relative !important;
+  z-index:50 !important;
+}
+
+.poster-topline span:first-child{
+  position:relative !important;
+  z-index:51 !important;
+}
+
+.poster-topline span:last-child{
+  display:none !important;
+  visibility:hidden !important;
+}
+
+/* Keep main title below subtitle */
+.poster-header{
+  position:relative !important;
+  z-index:10 !important;
+}
+
+.poster-header h2{
+  position:relative !important;
+  z-index:10 !important;
 }
