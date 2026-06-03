@@ -1,6 +1,6 @@
 const defaultState = {
-  title: "DRAFT RESULTS",
-  subtitle: "",
+  title: "ドラフト結果",
+  subtitle: "FIGHTING GAME TEAM BATTLE",
   ratio: "landscape",
   teams: [
     {
@@ -151,8 +151,8 @@ function buildEditor() {
 }
 
 function render() {
-  state.title = $("eventTitle").value || "DRAFT RESULTS";
-  state.subtitle = $("eventSubtitle").value || "";
+  state.title = $("eventTitle").value || "ドラフト結果";
+  state.subtitle = $("eventSubtitle").value || "FIGHTING GAME TEAM BATTLE";
   state.ratio = $("boardRatio").value;
 
   $("posterTitle").textContent = state.title;
