@@ -1,1 +1,96 @@
-# ptcg-draft
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>ドラフト指名結果メーカー</title>
+  <meta name="description" content="格ゲー・eスポーツ大会向けのドラフト指名結果ボードメーカー">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Reggae+One&family=Noto+Sans+JP:wght@400;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="site-bg" aria-hidden="true"></div>
+
+  <main class="app">
+    <section class="tool-panel" aria-label="入力パネル">
+      <div class="tool-panel__top">
+        <div>
+          <p class="eyebrow">DRAFT BOARD MAKER</p>
+          <h1>ドラフト指名結果メーカー</h1>
+        </div>
+        <button id="togglePanel" class="ghost-button" type="button">入力欄を隠す</button>
+      </div>
+
+      <div id="controls" class="controls">
+        <div class="field-grid">
+          <label>
+            大会名
+            <input id="eventTitle" type="text" maxlength="40">
+          </label>
+          <label>
+            サブタイトル
+            <input id="eventSubtitle" type="text" maxlength="48">
+          </label>
+          <label>
+            チーム数
+            <select id="teamCount" aria-label="チーム数"></select>
+          </label>
+          <label>
+            ボード比率
+            <select id="boardRatio">
+              <option value="landscape">16:9 横長 / 配信・X向け</option>
+              <option value="portrait">9:16 縦長</option>
+              <option value="square">1:1 正方形</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="button-row">
+          <button id="downloadPng" type="button">画像として保存</button>
+          <button id="copyShareUrl" type="button">共有URLをコピー</button>
+          <button id="resetSample" type="button" class="secondary">サンプルに戻す</button>
+        </div>
+
+        <div id="teamEditor" class="team-editor"></div>
+      </div>
+    </section>
+
+    <section class="preview-wrap" aria-label="プレビュー">
+      <div id="captureArea" class="capture-area landscape">
+        <div class="poster-bg"></div>
+        <div class="poster-frame">
+          <div class="poster-topline">
+            <span id="posterSubtitle">FIGHTING GAME TEAM BATTLE</span>
+            <span>LIVE DRAFT RESULTS</span>
+          </div>
+
+          <header class="poster-header">
+            <div>
+              <p class="poster-kicker">STREET BATTLE LEAGUE</p>
+              <h2 id="posterTitle">WANTAN CUP DRAFT</h2>
+            </div>
+            <div class="poster-badge">
+              <strong>DRAFT</strong>
+              <span>RESULT</span>
+            </div>
+          </header>
+
+          <section id="board" class="draft-board"></section>
+
+          <footer class="poster-footer">
+            <span>NO ICONS / NO PHOTOS / TEXT ONLY</span>
+            <span>GENERATED FOR STREAM OVERLAY</span>
+          </footer>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

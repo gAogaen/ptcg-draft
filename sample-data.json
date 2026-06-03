@@ -1,0 +1,40 @@
+# ドラフト指名結果メーカー
+
+格ゲー・eスポーツ大会向けのドラフト結果発表サイトです。  
+GitHub Pages にそのままアップロードして使えます。
+
+## ファイル構成
+
+```text
+index.html
+style.css
+script.js
+sample-data.json
+assets/
+  background.webp
+  noise.png
+  slash.svg
+```
+
+## 使い方
+
+1. GitHubリポジトリに全ファイルをアップロード
+2. GitHub Pagesを有効化
+3. `index.html` にアクセス
+4. 大会名、チーム名、選手名を入力
+5. 「画像として保存」でPNG出力
+
+## 機能
+
+- 最大6チーム
+- 各チーム6名
+- チームカラー変更
+- スマホ対応
+- 横向き表示最適化
+- PNG保存
+- URL共有
+- OBSブラウザソース対応
+
+## 補足
+
+ブラウザで `index.html` を直接開いても動きますが、共有URLや一部ブラウザ挙動は GitHub Pages 上のほうが安定します。
