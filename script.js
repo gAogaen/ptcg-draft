@@ -4,36 +4,12 @@ const defaultState = {
   ratio: "landscape",
   noise: false,
   teams: [
-    {
-      name: "Aよし",
-      color: "#ff3045",
-      players: ["", "", "", "", "", ""]
-    },
-    {
-      name: "Hiro",
-      color: "#22a8ff",
-      players: ["", "", "", "", "", ""]
-    },
-    {
-      name: "あめれ",
-      color: "#b636ff",
-      players: ["", "", "", "", "", ""]
-    },
-    {
-      name: "uk",
-      color: "#00d084",
-      players: ["", "", "", "", "", ""]
-    },
-    {
-      name: "カボタク",
-      color: "#ff8a00",
-      players: ["", "", "", "", "", ""]
-    },
-    {
-      name: "no name",
-      color: "#ffd200",
-      players: ["", "", "", "", "", ""]
-    }
+    { name: "Aよし", color: "#ff3045", players: ["", "", "", "", "", ""] },
+    { name: "Hiro", color: "#22a8ff", players: ["", "", "", "", "", ""] },
+    { name: "あめれ", color: "#b636ff", players: ["", "", "", "", "", ""] },
+    { name: "uk", color: "#00d084", players: ["", "", "", "", "", ""] },
+    { name: "カボタク", color: "#ff8a00", players: ["", "", "", "", "", ""] },
+    { name: "no name", color: "#ffd200", players: ["", "", "", "", "", ""] }
   ]
 };
 
@@ -110,7 +86,7 @@ function syncInputs() {
   $("eventSubtitle").value = state.subtitle;
   $("boardRatio").value = state.ratio;
   $("noiseToggle").value = state.noise ? "on" : "off";
-  teamCount.value = String(Math.min(6, Math.max(1, state.teams.length)));
+  teamCount.value = "5";
   buildEditor();
   render();
 }
@@ -158,12 +134,12 @@ function render() {
   state.title = $("eventTitle").value || "ドラフト結果";
   state.subtitle = $("eventSubtitle").value || "チャンピオンズリーグ2027 愛知";
   state.ratio = $("boardRatio").value;
+  state.noise = $("noiseToggle").value === "on";
 
   $("posterTitle").textContent = state.title;
   $("posterSubtitle").textContent = state.subtitle;
 
   captureArea.className = "capture-area " + state.ratio;
-  state.noise = $("noiseToggle").value === "on";
   document.body.classList.toggle("noise-on", state.noise);
 
   const count = Number(teamCount.value);
@@ -194,7 +170,6 @@ function render() {
     board.appendChild(card);
   });
 }
-
 
 function getNameLengthClass(name) {
   const len = Array.from(String(name || "")).length;
@@ -257,8 +232,7 @@ $("copyShareUrl").addEventListener("click", async function() {
 
 $("downloadPng").addEventListener("click", async function() {
   if (typeof html2canvas === "undefined") {
-    showToast("画像保存ライブラリの読み込みに失敗しました");
-    alert("画像保存用ライブラリ html2canvas が読み込めませんでした。ネット接続やCDNブロックを確認してください。");
+    alert("画像保存用ライブラリ html2canvas が読み込めませんでした。");
     return;
   }
 
@@ -285,8 +259,7 @@ $("downloadPng").addEventListener("click", async function() {
     showToast("PNGを保存しました");
   } catch (e) {
     console.error(e);
-    showToast("PNG保存に失敗しました");
-    alert("PNG保存に失敗しました。表示自体は使えます。");
+    alert("PNG保存に失敗しました。");
   }
 });
 

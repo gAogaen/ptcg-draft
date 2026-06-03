@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>PTCGドラフトメーカー</title>
-  <meta name="description" content="格ゲー・eスポーツ大会向けのドラフト指名結果ボードメーカー">
+  <meta name="description" content="PTCG向けドラフト結果発表メーカー">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&family=Reggae+One&family=Noto+Sans+JP:wght@400;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Reggae+One&family=Noto+Sans+JP:wght@400;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
@@ -25,31 +25,24 @@
 
       <div id="controls" class="controls">
         <div class="field-grid">
-          <label>
-            大会名
+          <label>大会名
             <input id="eventTitle" type="text" maxlength="40" autocomplete="off">
           </label>
-          <label>
-            サブタイトル
+          <label>サブタイトル
             <input id="eventSubtitle" type="text" maxlength="48" autocomplete="off">
           </label>
-          <label>
-            チーム数
+          <label>チーム数
             <select id="teamCount" aria-label="チーム数"></select>
           </label>
-          
-<label>
-  背景ノイズ
-  <select id="noiseToggle">
-    <option value="off">なし（デフォルト）</option>
-    <option value="on">あり</option>
-  </select>
-</label>
-
-          <label>
-            ボード比率
+          <label>背景ノイズ
+            <select id="noiseToggle">
+              <option value="off">なし</option>
+              <option value="on">あり</option>
+            </select>
+          </label>
+          <label>ボード比率
             <select id="boardRatio">
-              <option value="landscape">16:9 横長 / 配信・X向け</option>
+              <option value="landscape">16:9 横長</option>
               <option value="portrait">9:16 縦長</option>
               <option value="square">1:1 正方形</option>
             </select>
@@ -70,24 +63,18 @@
       <div id="captureArea" class="capture-area landscape">
         <div class="poster-bg"></div>
         <div class="poster-frame">
-          <div class="poster-topline">
-            <span id="posterSubtitle"></span>
-            <span></span>
-          </div>
-
           <header class="poster-header">
             <div>
-              <p class="poster-kicker"></p>
-              <h2 id="posterTitle">DRAFT RESULTS</h2>
+              <h2 id="posterTitle">ドラフト結果</h2>
             </div>
           </header>
 
-          <section id="board" class="draft-board"></section>
+          <div class="poster-topline">
+            <span id="posterSubtitle">チャンピオンズリーグ2027 愛知</span>
+            <span></span>
+          </div>
 
-          <footer class="poster-footer">
-            <span></span>
-            <span></span>
-          </footer>
+          <section id="board" class="draft-board"></section>
         </div>
       </div>
     </section>
