@@ -966,3 +966,77 @@ body.noise-on .poster-bg{
 .capture-area.landscape .draft-board.team-count-6 .pick-no{
   left:.65em !important;
 }
+
+
+/* v14 - player names left aligned + long name auto compression */
+
+.player-row{
+  display:grid !important;
+  grid-template-columns:2.7em minmax(0,1fr) !important;
+  align-items:center !important;
+  justify-content:initial !important;
+  justify-items:initial !important;
+  padding-left:.75em !important;
+  padding-right:.75em !important;
+}
+
+.pick-no{
+  position:static !important;
+  transform:skew(7deg) !important;
+  min-width:2.2em !important;
+  text-align:center !important;
+  justify-self:start !important;
+}
+
+.player-name{
+  grid-column:auto !important;
+  width:100% !important;
+  text-align:left !important;
+  justify-self:start !important;
+  transform-origin:left center;
+  transform:skew(7deg) !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+/* longer names */
+.player-name.name-long{
+  font-size:clamp(8px,.9vw,14px) !important;
+  letter-spacing:-.02em;
+}
+
+/* very long names: shrink and horizontally condense */
+.player-name.name-very-long{
+  font-size:clamp(7px,.78vw,12px) !important;
+  letter-spacing:-.06em;
+  transform:skew(7deg) scaleX(.82) !important;
+}
+
+/* ultra long names: strongest compression */
+.player-name.name-ultra-long{
+  font-size:clamp(6px,.68vw,10.5px) !important;
+  letter-spacing:-.08em;
+  transform:skew(7deg) scaleX(.68) !important;
+}
+
+/* 6 team layout adjustment */
+.capture-area.landscape .draft-board.team-count-6 .player-row{
+  grid-template-columns:2.35em minmax(0,1fr) !important;
+  padding-left:.55em !important;
+  padding-right:.55em !important;
+}
+
+.capture-area.landscape .draft-board.team-count-6 .player-name.name-long{
+  font-size:clamp(7px,.78vw,12px) !important;
+}
+
+.capture-area.landscape .draft-board.team-count-6 .player-name.name-very-long{
+  font-size:clamp(6px,.68vw,10.5px) !important;
+  transform:skew(7deg) scaleX(.78) !important;
+}
+
+.capture-area.landscape .draft-board.team-count-6 .player-name.name-ultra-long{
+  font-size:clamp(5.5px,.62vw,9.5px) !important;
+  transform:skew(7deg) scaleX(.64) !important;
+}

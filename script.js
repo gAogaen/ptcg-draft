@@ -186,13 +186,22 @@ function render() {
         Array.from({ length: 6 }, function(_, p) {
           return '<div class="player-row">' +
             '<div class="pick-no">' + String(p + 1).padStart(2, "0") + '</div>' +
-            '<div class="player-name">' + escapeHtml(team.players[p] || ("PLAYER " + (p + 1))) + '</div>' +
+            '<div class="player-name ' + getNameLengthClass(team.players[p] || "") + '">' + escapeHtml(team.players[p] || "") + '</div>' +
           '</div>';
         }).join("") +
       '</div>';
 
     board.appendChild(card);
   });
+}
+
+
+function getNameLengthClass(name) {
+  const len = Array.from(String(name || "")).length;
+  if (len >= 18) return "name-ultra-long";
+  if (len >= 14) return "name-very-long";
+  if (len >= 10) return "name-long";
+  return "";
 }
 
 function hexToRgb(hex) {
