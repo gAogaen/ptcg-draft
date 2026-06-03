@@ -110,7 +110,7 @@ function syncInputs() {
   $("eventSubtitle").value = state.subtitle;
   $("boardRatio").value = state.ratio;
   $("noiseToggle").value = state.noise ? "on" : "off";
-  teamCount.value = "5";
+  teamCount.value = String(Math.min(6, Math.max(1, state.teams.length)));
   buildEditor();
   render();
 }
@@ -241,8 +241,7 @@ teamCount.addEventListener("change", function() {
 
 $("resetSample").addEventListener("click", function() {
   state = deepClone(defaultState);
-  teamCount.value = "5";
-syncInputs();
+  syncInputs();
   showToast("サンプルに戻しました");
 });
 
