@@ -32,7 +32,10 @@ for (let i = 1; i <= 6; i++) {
 }
 
 function utf8ToBase64(str) {
-  return btoa(String.fromCharCode.apply(null, new TextEncoder().encode(str)));
+  const bytes = new TextEncoder().encode(str);
+  let binary = "";
+  bytes.forEach(function(b) { binary += String.fromCharCode(b); });
+  return btoa(binary);
 }
 
 function base64ToUtf8(str) {
