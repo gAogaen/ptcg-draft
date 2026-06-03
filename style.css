@@ -7,7 +7,6 @@
   font-display:swap;
 }
 
-
 :root{
   --brush-font:"OnionGeki","Reggae One","Noto Sans JP",cursive;
   --bg:#05070d;
@@ -34,7 +33,13 @@ body{
   inset:0;
   z-index:-10;
   background:
-    linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.66)),
+    linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.7)),
+    url("./assets/background.webp") center/cover no-repeat;
+}
+
+body.noise-on .site-bg{
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.7)),
     url("./assets/noise.png"),
     url("./assets/background.webp") center/cover no-repeat;
 }
@@ -62,7 +67,7 @@ body{
   align-items:center;
 }
 
-.eyebrow,.poster-kicker{
+.eyebrow{
   margin:0 0 4px;
   color:#ffcf4c;
   font-family:"Oswald","Noto Sans JP",sans-serif;
@@ -80,7 +85,7 @@ body{
 
 .field-grid{
   display:grid;
-  grid-template-columns:repeat(4,minmax(160px,1fr));
+  grid-template-columns:repeat(5,minmax(150px,1fr));
   gap:12px;
 }
 
@@ -102,7 +107,10 @@ input,select{
   font:inherit;
 }
 
-select option{color:#111;background:#fff}
+select option{
+  color:#111;
+  background:#fff;
+}
 
 input:focus,select:focus{
   outline:2px solid var(--accent);
@@ -126,7 +134,8 @@ button{
   box-shadow:0 10px 30px rgba(255,48,69,.26);
 }
 
-button.secondary,.ghost-button{
+button.secondary,
+.ghost-button{
   background:rgba(255,255,255,.12);
   box-shadow:none;
 }
@@ -170,19 +179,36 @@ button.secondary,.ghost-button{
   box-shadow:0 30px 120px rgba(0,0,0,.75);
 }
 
-.capture-area.landscape{width:min(100%,1280px);aspect-ratio:16/9}
-.capture-area.portrait{width:min(100%,520px);aspect-ratio:9/16}
-.capture-area.square{width:min(100%,900px);aspect-ratio:1/1}
+.capture-area.landscape{
+  width:min(100%,1280px);
+  aspect-ratio:16/9;
+}
+
+.capture-area.portrait{
+  width:min(100%,520px);
+  aspect-ratio:9/16;
+}
+
+.capture-area.square{
+  width:min(100%,900px);
+  aspect-ratio:1/1;
+}
 
 .poster-bg{
   position:absolute;
   inset:0;
   background:
-    linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.42)),
-    url("./assets/noise.png"),
+    linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.52)),
     url("./assets/background.webp") center/cover no-repeat;
   filter:saturate(1.28) contrast(1.12);
   z-index:-3;
+}
+
+body.noise-on .poster-bg{
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.52)),
+    url("./assets/noise.png"),
+    url("./assets/background.webp") center/cover no-repeat;
 }
 
 .poster-bg:after{
@@ -192,57 +218,57 @@ button.secondary,.ghost-button{
   background:
     url("./assets/slash.svg") center 28%/120% 42% no-repeat,
     repeating-linear-gradient(0deg,rgba(255,255,255,.07) 0 1px,transparent 1px 5px);
-  opacity:.6;
+  opacity:.45;
 }
 
 .poster-frame{
   position:absolute;
-  inset:3.2%;
+  inset:1.4%;
   display:flex;
   flex-direction:column;
-  gap:1.4%;
-  border:2px solid rgba(255,255,255,.18);
-  padding:2%;
+  gap:.4%;
+  padding:1.2% 1.2% 1.4%;
+  border:none;
 }
 
-.poster-frame:before,.poster-frame:after{
-  content:"";
-  position:absolute;
-  width:26%;
-  height:3px;
-  background:linear-gradient(90deg,#ff3045,#22a8ff,#ffd200);
-  filter:drop-shadow(0 0 18px #fff);
-}
-
-.poster-frame:before{left:-2px;top:-2px}
-.poster-frame:after{right:-2px;bottom:-2px}
-
-.poster-topline,.poster-footer{
-  display:flex;
-  justify-content:space-between;
-  color:rgba(255,255,255,.7);
-  font-family:"Oswald","Noto Sans JP",sans-serif;
-  font-size:clamp(8px,1.05vw,14px);
-  letter-spacing:.16em;
-  z-index:2;
+.poster-frame:before,
+.poster-frame:after{
+  display:none;
 }
 
 .poster-header{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:3%;
-  z-index:2;
+  order:1;
   flex:0 0 auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  margin-top:0;
+  margin-bottom:.15%;
+  z-index:2;
+}
+
+.poster-header > div{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.poster-kicker,
+.poster-badge{
+  display:none;
 }
 
 .poster-header h2{
   position:relative;
-  margin:0;
+  margin:0 0 .04em;
+  text-align:center;
   font-family:var(--brush-font);
-  font-size:clamp(24px,4.7vw,60px);
+  font-size:clamp(22px,3.8vw,48px);
   line-height:.92;
-  letter-spacing:.08em;
+  letter-spacing:.09em;
   font-weight:400;
   transform:skew(-9deg) rotate(-1.2deg);
   color:#fff;
@@ -257,7 +283,6 @@ button.secondary,.ghost-button{
   filter:contrast(1.18);
 }
 
-
 .poster-header h2:after{
   content:"";
   position:absolute;
@@ -271,54 +296,74 @@ button.secondary,.ghost-button{
   filter:blur(1px);
 }
 
-.team-head:after{
-  content:"";
-  position:absolute;
-  left:3%;
-  right:10%;
-  bottom:8%;
-  height:2px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.62),transparent);
-  opacity:.32;
-  filter:blur(.5px);
-}
-
-.poster-badge{
-  min-width:11%;
+.poster-topline{
+  order:2;
+  display:flex;
+  justify-content:center;
+  align-items:center;
   text-align:center;
-  border:1px solid rgba(255,255,255,.25);
-  padding:1% 1.4%;
-  background:rgba(0,0,0,.35);
-  transform:skew(-8deg);
-}
-
-.poster-badge strong{
-  display:block;
-  font-family:"Oswald","Noto Sans JP",sans-serif;
-  font-size:clamp(14px,2vw,28px);
-}
-
-.poster-badge span{
-  color:#ffcf4c;
-  font-size:clamp(8px,0.9vw,13px);
-  letter-spacing:.18em;
-}
-
-.draft-board{
-  flex:1 1 auto;
-  min-height:0;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  grid-auto-rows:minmax(0,1fr);
-  gap:1.25%;
+  width:100%;
+  margin:0 0 .45%;
+  color:rgba(255,255,255,.72);
+  font-family:var(--brush-font);
+  font-size:clamp(9px,.82vw,14px);
+  font-weight:400;
+  letter-spacing:.08em;
+  -webkit-text-stroke:.45px rgba(0,0,0,.85);
+  paint-order:stroke fill;
+  text-shadow:
+    2px 2px 0 rgba(0,0,0,.9),
+    0 0 10px rgba(255,255,255,.42),
+    0 0 20px rgba(255,48,69,.22);
   z-index:2;
 }
 
-.capture-area.portrait .draft-board{grid-template-columns:1fr}
-.capture-area.square .draft-board{grid-template-columns:repeat(2,1fr)}
-.capture-area.landscape .draft-board.team-count-1{grid-template-columns:1fr}
-.capture-area.landscape .draft-board.team-count-2{grid-template-columns:repeat(2,1fr)}
-.capture-area.landscape .draft-board.team-count-4{grid-template-columns:repeat(2,1fr)}
+.poster-topline span{
+  width:100%;
+  display:block;
+  text-align:center;
+}
+
+.poster-topline span:last-child{
+  display:none;
+}
+
+.poster-footer{
+  display:none;
+}
+
+.draft-board{
+  order:3;
+  flex:1 1 auto;
+  min-height:0;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-auto-rows:minmax(0,1fr);
+  gap:.85%;
+  align-content:stretch;
+  margin-top:0;
+  z-index:2;
+}
+
+.capture-area.landscape .draft-board.team-count-1{
+  grid-template-columns:1fr;
+}
+
+.capture-area.landscape .draft-board.team-count-2{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.capture-area.landscape .draft-board.team-count-4{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.capture-area.portrait .draft-board{
+  grid-template-columns:1fr;
+}
+
+.capture-area.square .draft-board{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
 
 .team-card{
   position:relative;
@@ -333,7 +378,7 @@ button.secondary,.ghost-button{
   box-shadow:
     inset 0 0 28px rgba(255,255,255,.06),
     0 0 30px rgba(var(--team-rgb),.58);
-  clip-path:polygon(0 0,94% 0,100% 9%,100% 100%,6% 100%,0 91%);
+  clip-path:polygon(0 0,96% 0,100% 6%,100% 100%,4% 100%,0 94%);
 }
 
 .team-card:before{
@@ -364,25 +409,42 @@ button.secondary,.ghost-button{
   position:relative;
   z-index:2;
   flex:0 0 auto;
-  padding:2% 4%;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:1.1% 2.5% .8%;
   background:linear-gradient(90deg,var(--team-color),rgba(var(--team-rgb),.12));
   border-bottom:1px solid rgba(255,255,255,.22);
 }
 
+.team-head:after{
+  content:"";
+  position:absolute;
+  left:3%;
+  right:10%;
+  bottom:8%;
+  height:2px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.62),transparent);
+  opacity:.32;
+  filter:blur(.5px);
+}
+
 .team-index{
-  font-family:"Oswald","Noto Sans JP",sans-serif;
-  font-size:clamp(8px,0.85vw,13px);
-  letter-spacing:.2em;
-  opacity:.78;
+  display:none;
 }
 
 .team-name{
-  margin-top:1px;
+  width:100%;
+  margin:0 auto;
+  text-align:center;
   font-family:var(--brush-font);
-  font-size:clamp(18px,2.35vw,34px);
+  font-size:clamp(14px,1.9vw,26px);
   font-weight:400;
   letter-spacing:.08em;
-  line-height:1;
+  line-height:.96;
   text-transform:uppercase;
   color:#fff;
   paint-order:stroke fill;
@@ -404,34 +466,42 @@ button.secondary,.ghost-button{
   min-height:0;
   display:grid;
   grid-template-rows:repeat(6,minmax(0,1fr));
-  gap:1.3%;
-  padding:2% 3.4% 3%;
+  gap:.35%;
+  padding:.9% 2.1% 1.2%;
 }
 
 .player-row{
   min-height:0;
   display:grid;
-  grid-template-columns:auto 1fr;
-  gap:3.5%;
+  grid-template-columns:2.35em minmax(0,1fr);
   align-items:center;
-  padding:0 2.5%;
+  gap:.28em;
+  padding:0 .55em;
   background:linear-gradient(90deg,rgba(255,255,255,.12),rgba(255,255,255,.025));
   border:1px solid rgba(255,255,255,.11);
   transform:skew(-7deg);
 }
 
-.player-row > *{transform:skew(7deg)}
-
 .pick-no{
-  min-width:2.3em;
+  min-width:0;
+  text-align:center;
+  justify-self:center;
   font-family:"Oswald","Noto Sans JP",sans-serif;
-  font-size:clamp(11px,1.45vw,22px);
+  font-size:clamp(9px,1vw,15px);
   color:var(--team-color);
   text-shadow:0 0 12px var(--team-color);
+  transform:skew(7deg);
 }
 
 .player-name{
-  font-size:clamp(11px,1.28vw,21px);
+  min-width:0;
+  width:100%;
+  text-align:left;
+  justify-self:start;
+  transform-origin:left center;
+  transform:skew(7deg);
+  font-size:clamp(10px,1.18vw,18px);
+  line-height:1;
   font-weight:900;
   letter-spacing:.03em;
   white-space:nowrap;
@@ -440,36 +510,21 @@ button.secondary,.ghost-button{
   text-shadow:2px 2px 0 rgba(0,0,0,.8);
 }
 
-.capture-area.landscape .draft-board.team-count-4 .team-name,
-.capture-area.landscape .draft-board.team-count-5 .team-name,
-.capture-area.landscape .draft-board.team-count-6 .team-name{
-  font-size:clamp(14px,1.8vw,25px);
-  letter-spacing:.05em;
+.player-name.name-long{
+  font-size:clamp(8px,.9vw,14px);
+  letter-spacing:-.02em;
 }
 
-.capture-area.landscape .draft-board.team-count-4 .player-name,
-.capture-area.landscape .draft-board.team-count-5 .player-name,
-.capture-area.landscape .draft-board.team-count-6 .player-name{
-  font-size:clamp(9px,1.05vw,16px);
+.player-name.name-very-long{
+  font-size:clamp(7px,.78vw,12px);
+  letter-spacing:-.06em;
+  transform:skew(7deg) scaleX(.82);
 }
 
-.capture-area.landscape .draft-board.team-count-4 .pick-no,
-.capture-area.landscape .draft-board.team-count-5 .pick-no,
-.capture-area.landscape .draft-board.team-count-6 .pick-no{
-  font-size:clamp(9px,1.18vw,17px);
-}
-
-.capture-area.landscape .draft-board.team-count-4 .team-head,
-.capture-area.landscape .draft-board.team-count-5 .team-head,
-.capture-area.landscape .draft-board.team-count-6 .team-head{
-  padding:1.5% 4%;
-}
-
-.capture-area.landscape .draft-board.team-count-4 .players,
-.capture-area.landscape .draft-board.team-count-5 .players,
-.capture-area.landscape .draft-board.team-count-6 .players{
-  gap:.8%;
-  padding:1.5% 3.2% 2.2%;
+.player-name.name-ultra-long{
+  font-size:clamp(6px,.68vw,10.5px);
+  letter-spacing:-.08em;
+  transform:skew(7deg) scaleX(.68);
 }
 
 .toast{
@@ -493,44 +548,113 @@ button.secondary,.ghost-button{
   transform:translateX(-50%) translateY(0);
 }
 
+/* 16:9 6-team density */
+.capture-area.landscape .draft-board.team-count-6{
+  gap:.7%;
+}
+
+.capture-area.landscape .draft-board.team-count-6 .team-name{
+  font-size:clamp(12px,1.45vw,20px);
+}
+
+.capture-area.landscape .draft-board.team-count-6 .players{
+  padding:.7% 1.8% 1%;
+  gap:.25%;
+}
+
+.capture-area.landscape .draft-board.team-count-6 .player-row{
+  grid-template-columns:2.15em minmax(0,1fr);
+  gap:.18em;
+  padding:0 .4em;
+}
+
+.capture-area.landscape .draft-board.team-count-6 .player-name{
+  font-size:clamp(9px,1vw,15px);
+}
+
+.capture-area.landscape .draft-board.team-count-6 .pick-no{
+  font-size:clamp(8px,.95vw,14px);
+}
+
+.capture-area.landscape .draft-board.team-count-6 .player-name.name-long{
+  font-size:clamp(7px,.78vw,12px);
+}
+
+.capture-area.landscape .draft-board.team-count-6 .player-name.name-very-long{
+  font-size:clamp(6px,.68vw,10.5px);
+  transform:skew(7deg) scaleX(.78);
+}
+
+.capture-area.landscape .draft-board.team-count-6 .player-name.name-ultra-long{
+  font-size:clamp(5.5px,.62vw,9.5px);
+  transform:skew(7deg) scaleX(.64);
+}
+
 @media (max-width:900px){
-  .field-grid{grid-template-columns:1fr 1fr}
-  .tool-panel__top{align-items:flex-start}
+  .field-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .tool-panel__top{
+    align-items:flex-start;
+  }
 }
 
 @media (max-width:640px){
-  .app{padding:10px}
-  .field-grid{grid-template-columns:1fr}
-  .poster-frame{inset:2.6%;padding:2.3%;gap:1%}
-  .poster-header h2{font-size:clamp(24px,8vw,46px)}
-  .poster-topline,.poster-footer{font-size:8px}
-  
-.poster-header h2:after{
-  content:"";
-  position:absolute;
-  left:-3%;
-  right:-5%;
-  bottom:.04em;
-  height:.16em;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);
-  opacity:.28;
-  transform:skew(-18deg);
-  filter:blur(1px);
-}
+  .app{
+    padding:10px;
+  }
 
-.team-head:after{
-  content:"";
-  position:absolute;
-  left:3%;
-  right:10%;
-  bottom:8%;
-  height:2px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.62),transparent);
-  opacity:.32;
-  filter:blur(.5px);
-}
+  .field-grid{
+    grid-template-columns:1fr;
+  }
 
-.poster-badge{display:none}
+  .poster-frame{
+    inset:1.3%;
+    padding:1.1%;
+    gap:.35%;
+  }
+
+  .poster-header h2{
+    font-size:clamp(20px,7vw,38px);
+  }
+
+  .poster-topline{
+    font-size:clamp(8px,2.8vw,12px);
+    margin-bottom:.6%;
+  }
+
+  .team-name{
+    font-size:clamp(12px,4vw,18px);
+  }
+
+  .player-row{
+    grid-template-columns:1.85em minmax(0,1fr);
+    gap:.12em;
+    padding:0 .28em;
+  }
+
+  .pick-no{
+    font-size:clamp(8px,2.5vw,12px);
+  }
+
+  .player-name{
+    font-size:clamp(9px,2.7vw,13px);
+  }
+
+  .player-name.name-long{
+    font-size:clamp(7.5px,2.2vw,11px);
+  }
+
+  .player-name.name-very-long{
+    font-size:clamp(6.8px,2vw,10px);
+    transform:skew(7deg) scaleX(.84);
+  }
+
+  .player-name.name-ultra-long{
+    font-size:clamp(6px,1.8vw,9px);
+    transform:skew(7deg) scaleX(.7);
+  }
 }
 
 @media (orientation:landscape) and (max-height:520px){
@@ -540,503 +664,21 @@ button.secondary,.ghost-button{
     gap:10px;
     align-items:start;
   }
+
   .tool-panel{
     max-height:96vh;
     overflow:auto;
     padding:12px;
   }
+
   .preview-wrap{
     margin-top:0;
     padding:0;
   }
-}
 
-
-/* v5 clean update */
-.poster-topline,
-.poster-footer,
-.poster-kicker,
-.poster-badge {
-  display: none !important;
-}
-
-.poster-header {
-  justify-content: center !important;
-  align-items: center !important;
-  text-align: center !important;
-  margin-top: 1.2%;
-  margin-bottom: 1%;
-}
-
-.poster-header > div {
-  width: 100%;
-}
-
-.poster-header h2 {
-  text-align: center !important;
-  margin-inline: auto !important;
-  font-size: clamp(26px, 4.3vw, 54px) !important;
-  letter-spacing: .09em;
-}
-
-.site-bg {
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.7)),
-    url("./assets/noise.png"),
-    url("./assets/background.webp") center/cover no-repeat !important;
-}
-
-.poster-bg {
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.52)),
-    url("./assets/noise.png"),
-    url("./assets/background.webp") center/cover no-repeat !important;
-}
-
-.poster-bg:after {
-  opacity: .45 !important;
-}
-
-.poster-frame {
-  gap: 1% !important;
-}
-
-.draft-board {
-  margin-top: .5%;
-}
-
-
-/* v6 - remove TEAM 01~06 labels from final image */
-.team-index{
-  display:none !important;
-}
-
-.team-head{
-  padding-top:3% !important;
-}
-
-/* balance after removing team index */
-.capture-area.landscape .draft-board.team-count-4 .team-head,
-.capture-area.landscape .draft-board.team-count-5 .team-head,
-.capture-area.landscape .draft-board.team-count-6 .team-head{
-  padding-top:2.2% !important;
-}
-
-
-/* v7 - centered subtitle, team names, and player names */
-
-/* subtitle return + centered */
-.poster-topline{
-  display:flex !important;
-  justify-content:center !important;
-  align-items:center !important;
-  text-align:center !important;
-  width:100%;
-  color:rgba(255,255,255,.78);
-  font-family:"Oswald","Noto Sans JP",sans-serif;
-  font-size:clamp(10px,1vw,16px);
-  letter-spacing:.18em;
-  margin-bottom:.5%;
-}
-
-.poster-topline span:last-child{
-  display:none !important;
-}
-
-/* title + subtitle centered */
-.poster-header{
-  justify-content:center !important;
-  text-align:center !important;
-}
-
-.poster-header > div{
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
-
-/* team names centered */
-.team-head{
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-}
-
-.team-name{
-  width:100%;
-  text-align:center !important;
-  margin-inline:auto;
-}
-
-/* player rows centered */
-.player-row{
-  grid-template-columns:1fr auto 1fr !important;
-  text-align:center !important;
-  justify-items:center;
-}
-
-.pick-no{
-  justify-self:center !important;
-  min-width:auto !important;
-}
-
-.player-name{
-  grid-column:2;
-  width:100%;
-  text-align:center !important;
-  justify-self:center;
-}
-
-/* remove asymmetry from player row */
-.player-row::before{
-  display:none !important;
-}
-
-
-/* v8 - subtitle under main title */
-
-.poster-topline{
-  order:2 !important;
-  display:flex !important;
-  justify-content:center !important;
-  align-items:center !important;
-  text-align:center !important;
-  width:100%;
-  color:rgba(255,255,255,.72);
-  font-family:"Oswald","Noto Sans JP",sans-serif;
-  font-size:clamp(10px,0.95vw,15px);
-  letter-spacing:.22em;
-  margin-top:.35%;
-  margin-bottom:.9%;
-}
-
-.poster-header{
-  order:1;
-  flex-direction:column !important;
-  gap:.2%;
-}
-
-.poster-header h2{
-  margin-bottom:.15em !important;
-}
-
-.poster-topline span{
-  width:100%;
-  display:block;
-  text-align:center;
-}
-
-.poster-topline span:last-child{
-  display:none !important;
-}
-
-
-/* v9 - title -> subtitle -> board order */
-
-.poster-frame{
-  display:flex !important;
-  flex-direction:column !important;
-}
-
-.poster-header{
-  order:1 !important;
-  display:flex !important;
-  flex-direction:column !important;
-  align-items:center !important;
-  justify-content:center !important;
-  text-align:center !important;
-  margin-bottom:.2% !important;
-}
-
-.poster-topline{
-  order:2 !important;
-  display:flex !important;
-  justify-content:center !important;
-  align-items:center !important;
-  text-align:center !important;
-  width:100%;
-  margin-top:0 !important;
-  margin-bottom:1.2% !important;
-  color:rgba(255,255,255,.72);
-  font-size:clamp(10px,.95vw,15px);
-  letter-spacing:.22em;
-}
-
-.draft-board{
-  order:3 !important;
-  margin-top:0 !important;
-}
-
-.poster-footer{
-  order:4 !important;
-}
-
-.poster-topline span{
-  width:100%;
-  display:block;
-  text-align:center;
-}
-
-.poster-topline span:last-child{
-  display:none !important;
-}
-
-
-/* v10 - more board area for 16:9 + 6 teams */
-
-/* remove outer frame */
-.poster-frame{
-  border:none !important;
-  inset:1.4% !important;
-  padding:1.2% 1.2% 1.4% !important;
-  gap:.4% !important;
-}
-
-.poster-frame:before,
-.poster-frame:after{
-  display:none !important;
-}
-
-/* tighten title/subtitle */
-.poster-header{
-  margin-top:0 !important;
-  margin-bottom:.15% !important;
-}
-
-.poster-header h2{
-  font-size:clamp(22px,3.8vw,48px) !important;
-  margin-bottom:.04em !important;
-}
-
-.poster-topline{
-  margin-bottom:.45% !important;
-  font-size:clamp(9px,.82vw,14px) !important;
-}
-
-/* give board more vertical room */
-.draft-board{
-  flex:1 1 auto !important;
-  margin-top:0 !important;
-  gap:.85% !important;
-  align-content:stretch !important;
-}
-
-/* team cards taller + denser */
-.team-card{
-  clip-path:polygon(0 0,96% 0,100% 6%,100% 100%,4% 100%,0 94%) !important;
-}
-
-.team-head{
-  padding:1.1% 2.5% .8% !important;
-  min-height:0 !important;
-}
-
-.team-name{
-  font-size:clamp(14px,1.9vw,26px) !important;
-  line-height:.96 !important;
-}
-
-.players{
-  grid-template-rows:repeat(6,minmax(0,1fr)) !important;
-  gap:.35% !important;
-  padding:.9% 2.1% 1.2% !important;
-}
-
-.player-row{
-  padding:0 .7% !important;
-  border-width:1px !important;
-}
-
-.player-name{
-  font-size:clamp(10px,1.18vw,18px) !important;
-  line-height:1 !important;
-}
-
-.pick-no{
-  font-size:clamp(9px,1vw,15px) !important;
-}
-
-/* 6-team landscape optimization */
-.capture-area.landscape .draft-board.team-count-6{
-  gap:.7% !important;
-}
-
-.capture-area.landscape .draft-board.team-count-6 .team-name{
-  font-size:clamp(12px,1.45vw,20px) !important;
-}
-
-.capture-area.landscape .draft-board.team-count-6 .player-name{
-  font-size:clamp(9px,1vw,15px) !important;
-}
-
-.capture-area.landscape .draft-board.team-count-6 .players{
-  padding:.7% 1.8% 1% !important;
-  gap:.25% !important;
-}
-
-/* reclaim footer area */
-.poster-footer{
-  display:none !important;
-}
-
-
-/* v11 - optional noise */
-
-.site-bg{
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.7)),
-    url("./assets/background.webp") center/cover no-repeat !important;
-}
-
-.poster-bg{
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.52)),
-    url("./assets/background.webp") center/cover no-repeat !important;
-}
-
-body.noise-on .site-bg{
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.7)),
-    url("./assets/noise.png"),
-    url("./assets/background.webp") center/cover no-repeat !important;
-}
-
-body.noise-on .poster-bg{
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.52)),
-    url("./assets/noise.png"),
-    url("./assets/background.webp") center/cover no-repeat !important;
-}
-
-
-/* v12 - subtitle brush font + stable player number alignment */
-
-/* Apply same brush font to subtitle */
-.poster-topline,
-.poster-topline span{
-  font-family:var(--brush-font) !important;
-  font-weight:400 !important;
-  letter-spacing:.08em !important;
-  -webkit-text-stroke:.45px rgba(0,0,0,.85);
-  paint-order:stroke fill;
-  text-shadow:
-    2px 2px 0 rgba(0,0,0,.9),
-    0 0 10px rgba(255,255,255,.42),
-    0 0 20px rgba(255,48,69,.22);
-}
-
-/* Keep pick number fixed and player name centered regardless of name length */
-.player-row{
-  position:relative !important;
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  grid-template-columns:none !important;
-  padding-left:3.2em !important;
-  padding-right:3.2em !important;
-}
-
-.pick-no{
-  position:absolute !important;
-  left:.85em !important;
-  top:50% !important;
-  transform:translateY(-50%) skew(7deg) !important;
-  min-width:2.2em !important;
-  text-align:center !important;
-  justify-self:auto !important;
-}
-
-.player-name{
-  grid-column:auto !important;
-  width:100% !important;
-  text-align:center !important;
-  justify-self:auto !important;
-  transform:skew(7deg) !important;
-}
-
-/* For very dense 6-team layout, slightly reduce fixed number gutter */
-.capture-area.landscape .draft-board.team-count-6 .player-row{
-  padding-left:2.75em !important;
-  padding-right:2.75em !important;
-}
-
-.capture-area.landscape .draft-board.team-count-6 .pick-no{
-  left:.65em !important;
-}
-
-
-/* v14 - player names left aligned + long name auto compression */
-
-.player-row{
-  display:grid !important;
-  grid-template-columns:2.7em minmax(0,1fr) !important;
-  align-items:center !important;
-  justify-content:initial !important;
-  justify-items:initial !important;
-  padding-left:.75em !important;
-  padding-right:.75em !important;
-}
-
-.pick-no{
-  position:static !important;
-  transform:skew(7deg) !important;
-  min-width:2.2em !important;
-  text-align:center !important;
-  justify-self:start !important;
-}
-
-.player-name{
-  grid-column:auto !important;
-  width:100% !important;
-  text-align:left !important;
-  justify-self:start !important;
-  transform-origin:left center;
-  transform:skew(7deg) !important;
-  white-space:nowrap !important;
-  overflow:hidden !important;
-  text-overflow:ellipsis !important;
-}
-
-/* longer names */
-.player-name.name-long{
-  font-size:clamp(8px,.9vw,14px) !important;
-  letter-spacing:-.02em;
-}
-
-/* very long names: shrink and horizontally condense */
-.player-name.name-very-long{
-  font-size:clamp(7px,.78vw,12px) !important;
-  letter-spacing:-.06em;
-  transform:skew(7deg) scaleX(.82) !important;
-}
-
-/* ultra long names: strongest compression */
-.player-name.name-ultra-long{
-  font-size:clamp(6px,.68vw,10.5px) !important;
-  letter-spacing:-.08em;
-  transform:skew(7deg) scaleX(.68) !important;
-}
-
-/* 6 team layout adjustment */
-.capture-area.landscape .draft-board.team-count-6 .player-row{
-  grid-template-columns:2.35em minmax(0,1fr) !important;
-  padding-left:.55em !important;
-  padding-right:.55em !important;
-}
-
-.capture-area.landscape .draft-board.team-count-6 .player-name.name-long{
-  font-size:clamp(7px,.78vw,12px) !important;
-}
-
-.capture-area.landscape .draft-board.team-count-6 .player-name.name-very-long{
-  font-size:clamp(6px,.68vw,10.5px) !important;
-  transform:skew(7deg) scaleX(.78) !important;
-}
-
-.capture-area.landscape .draft-board.team-count-6 .player-name.name-ultra-long{
-  font-size:clamp(5.5px,.62vw,9.5px) !important;
-  transform:skew(7deg) scaleX(.64) !important;
+  .player-row{
+    grid-template-columns:1.9em minmax(0,1fr);
+    gap:.12em;
+    padding:0 .3em;
+  }
 }
