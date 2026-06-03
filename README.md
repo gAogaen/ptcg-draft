@@ -47,3 +47,27 @@ assets/fonts/ に以下の名前で配置してください。
 - onion-geki.ttf
 
 配置すると、大会名・チーム名に自動適用されます。
+
+
+## v5 clean
+
+- 不要な英字表示を非表示化
+- 大会タイトルを中央寄せ
+- ノイズをv2寄りの控えめ設定に戻し
+- 初期チーム名を指定の6名に変更
+  - Aよし
+  - Hiro
+  - あめれ
+  - uk
+  - カボタク
+  - no name
+- 初期選手名を全チーム Player1〜Player6 に統一
+
+## 玉ねぎ楷書「激」無料版を使う場合
+
+フォント本体は同梱していません。
+以下に配置してください。
+
+assets/fonts/onion-geki.woff2
+または
+assets/fonts/onion-geki.ttf

@@ -550,3 +550,57 @@ button.secondary,.ghost-button{
     padding:0;
   }
 }
+
+
+/* v5 clean update */
+.poster-topline,
+.poster-footer,
+.poster-kicker,
+.poster-badge {
+  display: none !important;
+}
+
+.poster-header {
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  margin-top: 1.2%;
+  margin-bottom: 1%;
+}
+
+.poster-header > div {
+  width: 100%;
+}
+
+.poster-header h2 {
+  text-align: center !important;
+  margin-inline: auto !important;
+  font-size: clamp(26px, 4.3vw, 54px) !important;
+  letter-spacing: .09em;
+}
+
+.site-bg {
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.7)),
+    url("./assets/noise.png"),
+    url("./assets/background.webp") center/cover no-repeat !important;
+}
+
+.poster-bg {
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.52)),
+    url("./assets/noise.png"),
+    url("./assets/background.webp") center/cover no-repeat !important;
+}
+
+.poster-bg:after {
+  opacity: .45 !important;
+}
+
+.poster-frame {
+  gap: 1% !important;
+}
+
+.draft-board {
+  margin-top: .5%;
+}

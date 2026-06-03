@@ -1,14 +1,38 @@
 const defaultState = {
   title: "DRAFT RESULTS",
-  subtitle: "FIGHTING GAME TEAM BATTLE",
+  subtitle: "",
   ratio: "landscape",
   teams: [
-    { name: "TEAM BLAZE", color: "#ff3045", players: ["SHAKA", "ハイタニ", "ときど", "ガチくん", "立川", "カワノ"] },
-    { name: "TEAM ARCTIC", color: "#22a8ff", players: ["k4sen", "ふ〜ど", "どぐら", "マゴ", "もけ", "ナウマン"] },
-    { name: "TEAM NEBULA", color: "#b636ff", players: ["じゃすぱー", "ボンちゃん", "MOV", "あくあ", "りゅうせい", "竹内ジョン"] },
-    { name: "TEAM VENOM", color: "#00d084", players: ["ウメハラ", "板橋ザンギエフ", "ネモ", "sako", "ぷげら", "翔"] },
-    { name: "TEAM ORBIT", color: "#ff8a00", players: ["SPYGEA", "だるまいずごっど", "ありさか", "たいじ", "おぼ", "Zerost"] },
-    { name: "TEAM CROWN", color: "#ffd200", players: ["もこう", "加藤純一", "おにや", "こくじん", "総師範KSK", "えいた"] }
+    {
+      name: "Aよし",
+      color: "#ff3045",
+      players: ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"]
+    },
+    {
+      name: "Hiro",
+      color: "#22a8ff",
+      players: ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"]
+    },
+    {
+      name: "あめれ",
+      color: "#b636ff",
+      players: ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"]
+    },
+    {
+      name: "uk",
+      color: "#00d084",
+      players: ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"]
+    },
+    {
+      name: "カボタク",
+      color: "#ff8a00",
+      players: ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"]
+    },
+    {
+      name: "no name",
+      color: "#ffd200",
+      players: ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"]
+    }
   ]
 };
 
@@ -128,7 +152,7 @@ function buildEditor() {
 
 function render() {
   state.title = $("eventTitle").value || "DRAFT RESULTS";
-  state.subtitle = $("eventSubtitle").value || "FIGHTING GAME TEAM BATTLE";
+  state.subtitle = $("eventSubtitle").value || "";
   state.ratio = $("boardRatio").value;
 
   $("posterTitle").textContent = state.title;
