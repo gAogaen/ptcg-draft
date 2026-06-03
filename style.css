@@ -910,3 +910,59 @@ body.noise-on .poster-bg{
     url("./assets/noise.png"),
     url("./assets/background.webp") center/cover no-repeat !important;
 }
+
+
+/* v12 - subtitle brush font + stable player number alignment */
+
+/* Apply same brush font to subtitle */
+.poster-topline,
+.poster-topline span{
+  font-family:var(--brush-font) !important;
+  font-weight:400 !important;
+  letter-spacing:.08em !important;
+  -webkit-text-stroke:.45px rgba(0,0,0,.85);
+  paint-order:stroke fill;
+  text-shadow:
+    2px 2px 0 rgba(0,0,0,.9),
+    0 0 10px rgba(255,255,255,.42),
+    0 0 20px rgba(255,48,69,.22);
+}
+
+/* Keep pick number fixed and player name centered regardless of name length */
+.player-row{
+  position:relative !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  grid-template-columns:none !important;
+  padding-left:3.2em !important;
+  padding-right:3.2em !important;
+}
+
+.pick-no{
+  position:absolute !important;
+  left:.85em !important;
+  top:50% !important;
+  transform:translateY(-50%) skew(7deg) !important;
+  min-width:2.2em !important;
+  text-align:center !important;
+  justify-self:auto !important;
+}
+
+.player-name{
+  grid-column:auto !important;
+  width:100% !important;
+  text-align:center !important;
+  justify-self:auto !important;
+  transform:skew(7deg) !important;
+}
+
+/* For very dense 6-team layout, slightly reduce fixed number gutter */
+.capture-area.landscape .draft-board.team-count-6 .player-row{
+  padding-left:2.75em !important;
+  padding-right:2.75em !important;
+}
+
+.capture-area.landscape .draft-board.team-count-6 .pick-no{
+  left:.65em !important;
+}
