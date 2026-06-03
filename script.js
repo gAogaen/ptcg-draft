@@ -1,7 +1,8 @@
 const defaultState = {
   title: "ドラフト結果",
-  subtitle: "FIGHTING GAME TEAM BATTLE",
+  subtitle: "チャンピオンズリーグ2027 愛知",
   ratio: "landscape",
+  noise: false,
   teams: [
     {
       name: "Aよし",
@@ -74,6 +75,7 @@ function encodeState() {
     title: state.title,
     subtitle: state.subtitle,
     ratio: state.ratio,
+    noise: state.noise,
     teams: state.teams.slice(0, Number(teamCount.value))
   }));
 }
@@ -87,6 +89,7 @@ function decodeState() {
     state.title = parsed.title || defaultState.title;
     state.subtitle = parsed.subtitle || defaultState.subtitle;
     state.ratio = parsed.ratio || "landscape";
+    state.noise = !!parsed.noise;
     state.teams = (parsed.teams || []).concat(defaultState.teams).slice(0, 6);
     return true;
   } catch (e) {
@@ -106,6 +109,7 @@ function syncInputs() {
   $("eventTitle").value = state.title;
   $("eventSubtitle").value = state.subtitle;
   $("boardRatio").value = state.ratio;
+  $("noiseToggle").value = state.noise ? "on" : "off";
   teamCount.value = String(Math.min(6, Math.max(1, state.teams.length)));
   buildEditor();
   render();
@@ -152,13 +156,15 @@ function buildEditor() {
 
 function render() {
   state.title = $("eventTitle").value || "ドラフト結果";
-  state.subtitle = $("eventSubtitle").value || "FIGHTING GAME TEAM BATTLE";
+  state.subtitle = $("eventSubtitle").value || "チャンピオンズリーグ2027 愛知";
   state.ratio = $("boardRatio").value;
 
   $("posterTitle").textContent = state.title;
   $("posterSubtitle").textContent = state.subtitle;
 
   captureArea.className = "capture-area " + state.ratio;
+  state.noise = $("noiseToggle").value === "on";
+  document.body.classList.toggle("noise-on", state.noise);
 
   const count = Number(teamCount.value);
   board.className = "draft-board team-count-" + count;
@@ -215,6 +221,7 @@ function escapeHtml(str) {
 $("eventTitle").addEventListener("input", render);
 $("eventSubtitle").addEventListener("input", render);
 $("boardRatio").addEventListener("change", render);
+$("noiseToggle").addEventListener("change", render);
 
 teamCount.addEventListener("change", function() {
   const count = Number(teamCount.value);

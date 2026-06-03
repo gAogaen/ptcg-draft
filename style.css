@@ -783,3 +783,130 @@ button.secondary,.ghost-button{
 .poster-topline span:last-child{
   display:none !important;
 }
+
+
+/* v10 - more board area for 16:9 + 6 teams */
+
+/* remove outer frame */
+.poster-frame{
+  border:none !important;
+  inset:1.4% !important;
+  padding:1.2% 1.2% 1.4% !important;
+  gap:.4% !important;
+}
+
+.poster-frame:before,
+.poster-frame:after{
+  display:none !important;
+}
+
+/* tighten title/subtitle */
+.poster-header{
+  margin-top:0 !important;
+  margin-bottom:.15% !important;
+}
+
+.poster-header h2{
+  font-size:clamp(22px,3.8vw,48px) !important;
+  margin-bottom:.04em !important;
+}
+
+.poster-topline{
+  margin-bottom:.45% !important;
+  font-size:clamp(9px,.82vw,14px) !important;
+}
+
+/* give board more vertical room */
+.draft-board{
+  flex:1 1 auto !important;
+  margin-top:0 !important;
+  gap:.85% !important;
+  align-content:stretch !important;
+}
+
+/* team cards taller + denser */
+.team-card{
+  clip-path:polygon(0 0,96% 0,100% 6%,100% 100%,4% 100%,0 94%) !important;
+}
+
+.team-head{
+  padding:1.1% 2.5% .8% !important;
+  min-height:0 !important;
+}
+
+.team-name{
+  font-size:clamp(14px,1.9vw,26px) !important;
+  line-height:.96 !important;
+}
+
+.players{
+  grid-template-rows:repeat(6,minmax(0,1fr)) !important;
+  gap:.35% !important;
+  padding:.9% 2.1% 1.2% !important;
+}
+
+.player-row{
+  padding:0 .7% !important;
+  border-width:1px !important;
+}
+
+.player-name{
+  font-size:clamp(10px,1.18vw,18px) !important;
+  line-height:1 !important;
+}
+
+.pick-no{
+  font-size:clamp(9px,1vw,15px) !important;
+}
+
+/* 6-team landscape optimization */
+.capture-area.landscape .draft-board.team-count-6{
+  gap:.7% !important;
+}
+
+.capture-area.landscape .draft-board.team-count-6 .team-name{
+  font-size:clamp(12px,1.45vw,20px) !important;
+}
+
+.capture-area.landscape .draft-board.team-count-6 .player-name{
+  font-size:clamp(9px,1vw,15px) !important;
+}
+
+.capture-area.landscape .draft-board.team-count-6 .players{
+  padding:.7% 1.8% 1% !important;
+  gap:.25% !important;
+}
+
+/* reclaim footer area */
+.poster-footer{
+  display:none !important;
+}
+
+
+/* v11 - optional noise */
+
+.site-bg{
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.7)),
+    url("./assets/background.webp") center/cover no-repeat !important;
+}
+
+.poster-bg{
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.52)),
+    url("./assets/background.webp") center/cover no-repeat !important;
+}
+
+body.noise-on .site-bg{
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.7)),
+    url("./assets/noise.png"),
+    url("./assets/background.webp") center/cover no-repeat !important;
+}
+
+body.noise-on .poster-bg{
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.52)),
+    url("./assets/noise.png"),
+    url("./assets/background.webp") center/cover no-repeat !important;
+}
