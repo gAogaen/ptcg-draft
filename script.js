@@ -7,32 +7,32 @@ const defaultState = {
     {
       name: "Aよし",
       color: "#ff3045",
-      players: ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"]
+      players: ["", "", "", "", "", ""]
     },
     {
       name: "Hiro",
       color: "#22a8ff",
-      players: ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"]
+      players: ["", "", "", "", "", ""]
     },
     {
       name: "あめれ",
       color: "#b636ff",
-      players: ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"]
+      players: ["", "", "", "", "", ""]
     },
     {
       name: "uk",
       color: "#00d084",
-      players: ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"]
+      players: ["", "", "", "", "", ""]
     },
     {
       name: "カボタク",
       color: "#ff8a00",
-      players: ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"]
+      players: ["", "", "", "", "", ""]
     },
     {
       name: "no name",
       color: "#ffd200",
-      players: ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"]
+      players: ["", "", "", "", "", ""]
     }
   ]
 };
